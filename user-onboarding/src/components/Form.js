@@ -4,11 +4,17 @@ import * as yup from 'yup'
  
 
 
-const Form = () => {
+const Form = (props) => {
+
+const {name, value} = props;
+
+
+
   return (
-    <div className="App">
+    <div className="Form">
     
-    </div>
+    </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Y  
+    
   );
 }
 

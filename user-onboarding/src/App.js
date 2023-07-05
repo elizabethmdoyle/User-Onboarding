@@ -32,6 +32,34 @@ const App = () => {
 
   const[formErrors, setFormErrors] = useState(initialFormErrors)
 
+
+const getUsers = () => {
+      axios.get(`https://reqres.in/api/users`)
+      .then(res => setUsers(res.data))
+      .catch(err => console.error(err))
+}
+
+const postUsers = () => {
+      axios.post(`https://reqres.in/api/users`, users)
+      .then(res => 
+        setUsers(res.data)
+        setFormValues(initialFormErrors))
+      .catch(err => console.error(err))
+}
+
+
+
+
+const submitForm = () => {
+
+}
+
+const updateForm = () => {
+  
+}
+
+
+
   /* 
 We want to create a form to onboard a new user to our system. We need _at least_ the following pieces of information about our new user:
 
@@ -47,7 +75,12 @@ We want to create a form to onboard a new user to our system. We need _at least_
 
   return (
     <div className="App">
-    <Form />
+    <Form 
+    values={formValues}
+    // update={updateForm}
+    // submit={submitForm}
+    
+    />
     </div>
   );
 }
