@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import formSchema from "./validation/formSchema"
 import './App.css';
 import Form from './components/Form'
+import User from "./components/User"
 
 
 const initialFormValues = {
@@ -24,15 +25,18 @@ const initialFormErrors = {
 }
 
 const initialUsers = [];
- 
+const initialDisabled = true;
  
 const App = () => {
 
-  const [user, setUser] = useState()
+  //state
+  const [users, setUsers] = useState(initialUsers)
   const[formValues, setFormValues] = useState(initialFormValues)
-
+  //state for errors
   const[formErrors, setFormErrors] = useState(initialFormErrors)
-
+  //for schema
+  const [disabled, setDisabled] = useState(initialDisabled)       
+//helper functions
 
 const getUsers = () => {
       axios.get(`https://reqres.in/api/users`)
@@ -40,36 +44,49 @@ const getUsers = () => {
       .catch(err => console.error(err))
 }
 
-const postUsers = () => {
-      axios.post(`https://reqres.in/api/users`, users)
+const postUsers = (newUser) => {
+      axios.post(`https://reqres.in/api/users`, newUser)
       .then(res => 
-        setUsers(res.data), 
-        setFormValues(initialFormErrors))
+        setUsers([res.data, ...users]), 
+        setFormValues(initialFormValues))
       .catch(err => console.error(err))
 }
 
 
+//event handlers
 
+const updateForm = (name, value) => {
+  yup
+  .reach(name, value)
+  .validate(value)
+
+  setFormValues({
+    ...formValues, [name]: value
+  })
+}
 
 const submitForm = () => {
-
+    const newUser = {
+      firstName: formValues.firstName.trim(),
+      lastName: formValues.lastName.trim(),
+      email: formValues.email.trim(),
+      password: formValues.password.trim(),
+      termsOfService: formValues.termsOfService
+    }
+    postUsers(newUser)
 }
 
-const updateForm = () => {
-  
-}
+//side effects
+
+useEffect(() => {
+  getUsers()
+}, [])
 
 
-
-  /* 
-We want to create a form to onboard a new user to our system. We need _at least_ the following pieces of information about our new user:
-
-- [ ] Name (first_name, last_name)
-- [ ] Email
-- [ ] Password
-- [ ] Terms of Service (checkbox)
-- [ ] A Submit button to send our form data to the server.
-*/
+useEffect(() => {
+  formSchema.isValid(formValues)
+    .then(valid => setDisabled(!valid))
+}, [formValues])
 
 
 
@@ -79,10 +96,21 @@ We want to create a form to onboard a new user to our system. We need _at least_
       The app is rendering
     <Form 
     values={formValues}
-    // update={updateForm}
-    // submit={submitForm}
+    update={updateForm}
+    submit={submitForm}
+    errors={formErrors}
     
     />
+
+{
+        users.map(user => {
+          return (
+            <User key={user.id} details={user} />
+          )
+        })
+      }
+
+
     </div>
   );
 }

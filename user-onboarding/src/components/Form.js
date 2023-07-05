@@ -1,8 +1,8 @@
-import React ,{ useState, useEffect}from 'react'
+import React from 'react'
 
 const Form = (props) => {
 
- const {value, update, submit} = props;
+ const {value, update, submit, errors, disabled} = props;
 
 
 const onChange = (evt) => {
@@ -23,9 +23,18 @@ const onChange = (evt) => {
 
 
   return (
-    <>
     <div>
     The form is rendering
+
+    <button disabled={disabled}>submit</button>
+
+    <div>
+      <div>{errors.firstName}</div>
+      <div>{errors.lastName}</div>
+      <div>{errors.email}</div>
+      <div>{errors.passWord}</div>
+      <div>{errors.termsOfService}</div>
+    </div>
     <form onSubmit={onSubmit}>
       <label> First Name
         <input 
@@ -66,18 +75,17 @@ const onChange = (evt) => {
       <label> Terms Of Service
         <input 
             type="checkbox"
-            value={value.termsOfService}
+            value="termOfService"
             onChange={onChange}
-            checked={checked}
+            checked={value.termsOfService}
         
         />
       </label>  
-      <input type="submit" value="Submit"></input>
+     
 
 
     </form>
-       </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Y  
-       </>
+       </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
   );
 }
 
