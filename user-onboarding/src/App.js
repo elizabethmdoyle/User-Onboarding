@@ -22,18 +22,14 @@ const initialFormErrors = {
   tos: "",
 }
 
-const initialUsers = [];
-// const initialDisabled = true;
- 
 const App = () => {
 
   //state
-  const [users, setUsers] = useState(initialUsers)
+  const [users, setUsers] = useState([])
   const[formValues, setFormValues] = useState(initialFormValues)
   //state for errors
   const[formErrors, setFormErrors] = useState(initialFormErrors)
-  //for schema
-  // const [disabled, setDisabled] = useState(initialDisabled)       
+     
 //helper functions
 
 // const getUsers = () => {
@@ -42,14 +38,21 @@ const App = () => {
 //       .catch(err => console.error(err))
 // }
 
-const postUsers = (newUser) => {
-      axios.post(`https://reqres.in/api/users`, newUser)
-      .then(res => 
-        setUsers([res.data, ...users]), 
-        setFormValues(initialFormValues))
-      .catch(err => console.error(err))
-}
+// const postUsers = (newUser) => {
+//       axios.post(`https://reqres.in/api/users`, newUser)
+//       .then(res => 
+//         setUsers([res.data, ...users]), 
+//         setFormValues(initialFormValues))
+//       .catch(err => console.error(err))
+// }
 
+const submitForm = () => {
+  axios.post(`https://reqres.in/api/users`, formValues)
+        .then(res => {
+            setUsers([res.data, ...users]) })
+          .catch(err => console.error(err))
+          .finally(() =>  setFormValues(initialFormValues))
+}
 
 //event handlers
 const validate = (name, value) => {
@@ -68,16 +71,8 @@ const updateForm = (name, value) => {
 
 
 
-const submitForm = () => {
-    const newUser = {
-      firstName: formValues.firstName.trim(),
-      lastName: formValues.lastName.trim(),
-      email: formValues.email.trim(),
-      password: formValues.password.trim(),
-      tos: formValues.tos
-    }
-    postUsers(newUser)
-}
+
+
 
 //side effects
 
@@ -101,10 +96,15 @@ const submitForm = () => {
     values={formValues}
     update={updateForm}
     submit={submitForm}
-    errors={formErrors}
-    // disabled={disabled}
-    
+    errors={formErrors}    
     />
+
+    {users.map(user => {
+      <div key={user.id}>
+        <p>{user.createdAt}</p>
+        <p>{user.email}</p>
+        </div>
+    })}
 
 
 

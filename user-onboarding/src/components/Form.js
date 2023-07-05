@@ -28,10 +28,6 @@ const onChange = (evt) => {
 
   return (
     <div>
-   <h1>The form is rendering</h1> 
-
-    {/* <button disabled={disabled}>submit</button> */}
-
   
       <p>{errors.firstName}</p>
       <p>{errors.lastName}</p>
