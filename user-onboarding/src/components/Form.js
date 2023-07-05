@@ -2,19 +2,23 @@ import React from 'react'
 
 const Form = (props) => {
 
- const {value, update, submit, errors, disabled} = props;
+  console.log(props)
+  //props from App
+ const {update, submit} = props;
 
+//prop values for the form
+  const {firstName, lastName, email, password, tos} = props.values
 
 const onChange = (evt) => {
-  const {name, value, checked, type } = evt.target;
-
-  const valueToUse = type === checked ? true : value
-
-  update(name, valueToUse)
+    const {name, value, checked, type } = evt.target;
   
- }
+    const valueToUse = type === "checkbox" ? checked : value
+  
+    update(name, valueToUse)
+    
+   }
 
- const onSubmit = (evt) => {
+  const onSubmit = (evt) => {
   evt.preventDefault()
   submit()
 
@@ -24,22 +28,23 @@ const onChange = (evt) => {
 
   return (
     <div>
-    The form is rendering
+   <h1>The form is rendering</h1> 
 
-    <button disabled={disabled}>submit</button>
+    {/* <button disabled={disabled}>submit</button>
 
     <div>
       <div>{errors.firstName}</div>
       <div>{errors.lastName}</div>
       <div>{errors.email}</div>
       <div>{errors.passWord}</div>
-      <div>{errors.termsOfService}</div>
-    </div>
+      <div>{errors.tos}</div>
+    </div> */}
     <form onSubmit={onSubmit}>
       <label> First Name
         <input 
             type="text"
-            value={value.firstName}
+            name="firstName"
+            value={firstName}
             placeholder="Please type your First Name"
             onChange={onChange}
         
@@ -48,7 +53,8 @@ const onChange = (evt) => {
       <label> Last Name
         <input 
             type="text"
-            value={value.lastName}
+            name="lastName"
+            value={lastName}
             placeholder="Please type your First Name"
             onChange={onChange}
         
@@ -57,7 +63,8 @@ const onChange = (evt) => {
       <label> Email Address
         <input 
             type="text"
-            value={value.email}
+            name="email"
+            value={email}
             placeholder="Please type your First Name"
             onChange={onChange}
         
@@ -66,7 +73,8 @@ const onChange = (evt) => {
       <label> Password
         <input 
             type="text"
-            value={value.password}
+            name="password"
+            value={password}
             placeholder="Please type your First Name"
             onChange={onChange}
         
@@ -75,14 +83,15 @@ const onChange = (evt) => {
       <label> Terms Of Service
         <input 
             type="checkbox"
-            value="termOfService"
+            name="tos"
+            value={tos}
             onChange={onChange}
-            checked={value.termsOfService}
+            checked={tos}
         
         />
       </label>  
      
-
+    <input type="submit" value="Add a User"/>
 
     </form>
        </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
