@@ -2,6 +2,7 @@
 import React ,{ useState, useEffect}from 'react'
 import axios from 'axios'
 import * as yup from 'yup' 
+import formSchema from "./validation/formSchema"
 import './App.css';
 import Form from './components/Form'
 
@@ -42,7 +43,7 @@ const getUsers = () => {
 const postUsers = () => {
       axios.post(`https://reqres.in/api/users`, users)
       .then(res => 
-        setUsers(res.data)
+        setUsers(res.data), 
         setFormValues(initialFormErrors))
       .catch(err => console.error(err))
 }
@@ -75,6 +76,7 @@ We want to create a form to onboard a new user to our system. We need _at least_
 
   return (
     <div className="App">
+      The app is rendering
     <Form 
     values={formValues}
     // update={updateForm}
