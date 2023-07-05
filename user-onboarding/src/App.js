@@ -1,7 +1,7 @@
 import React ,{ useState, useEffect}from 'react'
 import axios from 'axios'
 import * as yup from 'yup' 
-import formSchema from "./validation/formSchema"
+import schema from "./validation/formSchema"
 import './App.css';
 import Form from './components/Form'
 
@@ -11,7 +11,7 @@ const initialFormValues = {
   lastName: "",
   email: "",
   password: "",
-  checked: false,
+  tos: false,
 };
 
 const initialFormErrors = {
@@ -23,7 +23,7 @@ const initialFormErrors = {
 }
 
 const initialUsers = [];
-const initialDisabled = true;
+// const initialDisabled = true;
  
 const App = () => {
 
@@ -31,7 +31,7 @@ const App = () => {
   const [users, setUsers] = useState(initialUsers)
   const[formValues, setFormValues] = useState(initialFormValues)
   //state for errors
-  // const[formErrors, setFormErrors] = useState(initialFormErrors)
+  const[formErrors, setFormErrors] = useState(initialFormErrors)
   //for schema
   // const [disabled, setDisabled] = useState(initialDisabled)       
 //helper functions
@@ -42,36 +42,41 @@ const App = () => {
 //       .catch(err => console.error(err))
 // }
 
-// const postUsers = (newUser) => {
-//       axios.post(`https://reqres.in/api/users`, newUser)
-//       .then(res => 
-//         setUsers([res.data, ...users]), 
-//         setFormValues(initialFormValues))
-//       .catch(err => console.error(err))
-// }
+const postUsers = (newUser) => {
+      axios.post(`https://reqres.in/api/users`, newUser)
+      .then(res => 
+        setUsers([res.data, ...users]), 
+        setFormValues(initialFormValues))
+      .catch(err => console.error(err))
+}
 
 
 //event handlers
+const validate = (name, value) => {
+  yup
+  .reach(schema, name)
+  .validate(value)
+  .then(() => 
+    setFormErrors({...formErrors, [name]: ""}))
+  .catch(err => setFormErrors({...formErrors, [name]: err.errors[0]}))
 
+}
 const updateForm = (name, value) => {
-  // yup
-  // .reach(name, value)
-  // .validate(value)
-
-  setFormValues({
-    ...formValues, [name]: value
-  })
+  validate(name, value);
+  setFormValues({ ...formValues, [name]: value })
 }
 
+
+
 const submitForm = () => {
-    // const newUser = {
-    //   firstName: formValues.firstName.trim(),
-    //   lastName: formValues.lastName.trim(),
-    //   email: formValues.email.trim(),
-    //   password: formValues.password.trim(),
-    //   tos: formValues.tos
-    // }
-    // postUsers(newUser)
+    const newUser = {
+      firstName: formValues.firstName.trim(),
+      lastName: formValues.lastName.trim(),
+      email: formValues.email.trim(),
+      password: formValues.password.trim(),
+      tos: formValues.tos
+    }
+    postUsers(newUser)
 }
 
 //side effects
@@ -96,7 +101,7 @@ const submitForm = () => {
     values={formValues}
     update={updateForm}
     submit={submitForm}
-    // errors={formErrors}
+    errors={formErrors}
     // disabled={disabled}
     
     />

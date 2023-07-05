@@ -4,7 +4,7 @@ const Form = (props) => {
 
   console.log(props)
   //props from App
- const {update, submit} = props;
+ const {update, submit, errors} = props;
 
 //prop values for the form
   const {firstName, lastName, email, password, tos} = props.values
@@ -30,15 +30,15 @@ const onChange = (evt) => {
     <div>
    <h1>The form is rendering</h1> 
 
-    {/* <button disabled={disabled}>submit</button>
+    {/* <button disabled={disabled}>submit</button> */}
 
-    <div>
-      <div>{errors.firstName}</div>
-      <div>{errors.lastName}</div>
-      <div>{errors.email}</div>
-      <div>{errors.passWord}</div>
-      <div>{errors.tos}</div>
-    </div> */}
+  
+      <p>{errors.firstName}</p>
+      <p>{errors.lastName}</p>
+      <p>{errors.email}</p>
+      <p>{errors.passWord}</p>
+      <p>{errors.tos}</p>
+    
     <form onSubmit={onSubmit}>
       <label> First Name
         <input 
